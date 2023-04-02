@@ -5,6 +5,12 @@ export const OpenAIStream = async (messages: Message[]) => {
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
 
+  const systemContent = `
+    You are an assistant with advanced knowledge in the field of engineering. The user is an engineer who asks you questions about programming and product development.
+
+    As an assistant, please provide answers that are helpful for product development, and include as much evidence and reference URLs as possible. Official documentation is preferred as a reference. If the user asks a question in Japanese, please translate the question into English, consider the answer in English, and provide the answer in Japanese.
+  `;
+
   const res = await fetch("https://api.openai.com/v1/chat/completions", {
     headers: {
       "Content-Type": "application/json",
@@ -16,7 +22,7 @@ export const OpenAIStream = async (messages: Message[]) => {
       messages: [
         {
           role: "system",
-          content: `You are a helpful, friendly, assistant.`
+          content: systemContent,
         },
         ...messages
       ],
